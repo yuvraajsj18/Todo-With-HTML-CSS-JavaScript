@@ -40,14 +40,14 @@
 
         <h1 class="text-center display-4">Todo App</h1>
 
-        <form class="m-auto pt-3 pb-3" id="todo-form">
+        <form class="m-auto pt-3 pb-3" id="todo-form" novalidate>
 
             <div class="input-group form-group">
 
                 <div class="input-group-prepend">
                     <label for="task-input" class="font-weight-bold input-group-text">Task: </label>
                 </div>
-                <input type="text" pattern="^(?!\s*$).+" class="form-control form-control-lg rounded-right" name="task" id="task-input">
+                <input type="text" pattern="^(?!\s*$).+" class="form-control form-control-lg rounded-right" name="task" id="task-input" required>
                 <div class="invalid-feedback" id="task-invalid-feedback">Please Enter Task.</div>
                 <div class="valid-feedback" id="task-valid-feedback">Now, you got it.</div>
 

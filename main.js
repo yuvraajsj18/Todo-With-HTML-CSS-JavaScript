@@ -174,7 +174,7 @@ todoForm.form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     if (todoForm.form.checkValidity() === false) {
-        form.classList.add('was-validated');
+        todoForm.form.classList.add('was-validated');
         return;
     }
 
