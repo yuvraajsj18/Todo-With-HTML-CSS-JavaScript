@@ -46,7 +46,7 @@ class TodoListItem {
         this.li.appendChild(this.controlDiv);
 
         // adding item to listElement(ul)
-        todoList.listElement.appendChild(this.li);
+        todoList.listElement.prepend(this.li);
     }
 
     // creates span element with task in it
