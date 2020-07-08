@@ -110,6 +110,9 @@ class Controls {
         checkboxInput.setAttribute('name', 'done-btn');
         checkboxInput.id = `done-${this.item.listItem.id}`
 
+        if (this.item.listItem.isDone)
+            checkboxInput.checked = true;
+
         // event listener for checkbox
         checkboxInput.addEventListener('click', (e) => {
             if (checkboxInput.checked)
@@ -120,6 +123,7 @@ class Controls {
             {
                 this.item.listItem.isDone = false;
             }
+            localStorage.setItem('todoList', JSON.stringify(todoList.listArray));
             this.item.ifDone(this.item.listItem.isDone);
         });
 
