@@ -1,5 +1,7 @@
 # Todo App with HTML CSS And JavaScript
 
+<img src="./images/screenshot.jpeg" width="350px">
+
 ## Features
   - Add tasks to todo list
   - Mark tasks as done in todo list
