@@ -15,7 +15,7 @@ header {
 }
 
 .todo-list-item {
-    --animate-duration: 0.3s;
+    --animate-duration: 0.5s;
 }
 
 .list-group-item {

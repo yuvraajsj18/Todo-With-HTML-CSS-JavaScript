@@ -15,7 +15,7 @@ class Todo {
 class UI {
     // Display List
     static displayList() {
-        const todoList = Storage.getTodos();
+        const todoList = Store.getTodos();
 
         todoList.forEach((todo) => {
             UI.addTodoToList(todo)
@@ -31,6 +31,8 @@ class UI {
                         d-flex align-items-center justify-content-between
                         animate__animated animate__fadeInDown
                     `
+        // set todoLI id to todo id for easy deletion from storage
+        todoLI.id = `${todo.id}`
         // 2. Creates a span for task text in LI
         const todoText = document.createElement('span');
         todoText.className = "todo-list-task lead";
@@ -43,6 +45,9 @@ class UI {
         const controls = UI.createControls(todo.id);
 
         todoLI.appendChild(controls);
+
+        // check before adding if its done
+        UI.markDone(todoLI, todo.isDone);
 
         // add TodoLI to list
         document.querySelector('#todo-list').prepend(todoLI);
@@ -66,10 +71,12 @@ class UI {
             todoLI.classList.add('list-group-item-success');
             // add line through to only the text inside list item
             todoLI.firstElementChild.style.textDecoration = "line-through";
+            todoLI.lastElementChild.firstElementChild.firstElementChild.checked = true;
         }
         else {
             todoLI.classList.remove('list-group-item-success');
             todoLI.firstElementChild.style.textDecoration = "none";
+            todoLI.lastElementChild.firstElementChild.firstElementChild.checked = false;
         }
     }
 
@@ -93,12 +100,16 @@ class UI {
 
         return controls;
     }
+
+    static clearFormFields() {
+        document.querySelector('#task-input').value = "";
+    }
 }
 
 // Storage class for persistance storage of todo list
-class Storage {
+class Store {
     // get existing todos in storage
-    getTodos() {
+    static getTodos() {
         let todoList;
         if (localStorage.getItem('todoList') === null) {
             todoList = [];
@@ -110,14 +121,14 @@ class Storage {
     }
 
     // add todos to storage
-    addTodo(todo) {
-        let todoList = Storage.getTodos();
+    static addTodo(todo) {
+        let todoList = Store.getTodos();
         todoList.push(todo);
-        localStorage.setItem(JSON.stringify(todoList));
+        localStorage.setItem('todoList', JSON.stringify(todoList));
     }
 
-    removeTodo(todoID) {
-        let todoList = Storage.getTodos();
+    static removeTodo(todoID) {
+        let todoList = Store.getTodos();
         // loop through todoList checking for target todo
         todoList.forEach((todo, index) => {
             if (todo.id == todoID) {
@@ -125,7 +136,19 @@ class Storage {
             }
         });
         // store the new todoList
-        localStorage.setItem(JSON.stringify(todoList));
+        localStorage.setItem('todoList', JSON.stringify(todoList));
+    }
+
+    static markDone(todoID, isDone) {
+        let todoList = Store.getTodos();
+        // loop through todoList checking for target todo
+        todoList.forEach((todo, index) => {
+            if (todo.id == todoID) {
+                todo.isDone = isDone;
+            }
+        });
+        // store the new todoList
+        localStorage.setItem('todoList', JSON.stringify(todoList));
     }
 }
 
@@ -155,7 +178,9 @@ todoForm.addEventListener('submit', (e) => {
     UI.addTodoToList(newTodo);
 
     // add todo to storage
-    Storage.addTodo(newTodo);
+    Store.addTodo(newTodo);
+
+    UI.clearFormFields();
 });
 
 // Event: task complete
@@ -172,7 +197,8 @@ document.querySelector('#todo-list').addEventListener('click', (e) => {
     // mark todo done in UI
     UI.markDone(todoLI, doneCheckbox.checked);
 
-    
+    // mark todo done in Storage
+    Store.markDone(todoLI.id, doneCheckbox.checked);
 });
 
 
@@ -188,4 +214,7 @@ document.querySelector('#todo-list').addEventListener('click', (e) => {
 
     // remove todo list item from UI
     UI.removeTodoFromList(todoLI);
+
+    // remove todo list item from storage
+    Store.removeTodo(todoLI.id);
 });
