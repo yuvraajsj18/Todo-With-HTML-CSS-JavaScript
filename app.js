@@ -217,4 +217,7 @@ document.querySelector('#todo-list').addEventListener('click', (e) => {
 
     // remove todo list item from storage
     Store.removeTodo(todoLI.id);
+
+    // Decrement total number of todos
+    Todo.numberOfTodos--;
 });
