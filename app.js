@@ -15,7 +15,13 @@ class Todo {
 class UI {
     // Display List
     static displayList() {
+        // get previous todos
         const todoList = Store.getTodos();
+
+        // reset ids of previous todo
+        todoList.forEach((todo) => {
+            todo.id = Todo.numberOfTodos++;
+        });
 
         todoList.forEach((todo) => {
             UI.addTodoToList(todo)
